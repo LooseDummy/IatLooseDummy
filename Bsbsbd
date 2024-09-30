@@ -1,0 +1,63 @@
+user = "onlykrd3"
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+local animationId = "rbxassetid://5901872109"
+local animation = Instance.new("Animation")
+animation.AnimationId = animationId
+
+local humanoid = character:FindFirstChildOfClass("Humanoid")
+local animator = humanoid:FindFirstChildOfClass("Animator")
+
+if not animator then
+    animator = Instance.new("Animator", humanoid)
+end
+
+function playAttackAnimation()
+    local animationTrack = animator:LoadAnimation(animation)
+    animationTrack:Play()
+    print("play attack animation.")
+end
+
+function performAttack()
+wait(0.35)
+x = workspace:WaitForChild(user).Torso.CFrame.Position.X
+y = workspace:WaitForChild(user).Torso.CFrame.Position.Y
+z = workspace:WaitForChild(user).Torso.CFrame.Position.Z
+
+local args = {
+    [1] = CFrame.new(x, y, z),
+    [2] = 43,
+    [3] = BrickColor.new(26),
+    [4] = Enum.Material.Neon
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Effects"):WaitForChild("GrowingSphere"):FireServer(unpack(args))
+local args = {
+    [1] = CFrame.new(x, y, z),
+    [2] = 43.25,
+    [3] = BrickColor.new(1020),
+    [4] = Enum.Material.ForceField
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Effects"):WaitForChild("GrowingSphere"):FireServer(unpack(args))
+game:GetService("ReplicatedStorage"):WaitForChild("Effects"):WaitForChild("GrowingSphere"):FireServer(unpack(args))
+game:GetService("ReplicatedStorage"):WaitForChild("Effects"):WaitForChild("GrowingSphere"):FireServer(unpack(args))
+heal = workspace:WaitForChild(user).Humanoid.MaxHealth-workspace:WaitForChild(user).Humanoid.Health
+local args = {
+    [1] = workspace:WaitForChild(user).Humanoid,
+    [2] = heal,
+    [3] = CFrame.new(x,y,z),
+    [4] = Vector3.zero,
+    [5] = 0,
+    [6] = 0.25,
+    [7] = "rbxassetid://2914074987",
+    [8] = 3
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Attacks"):WaitForChild("Heal"):WaitForChild("CDHeal"):FireServer(unpack(args))
+
+end
+
+playAttackAnimation()  
+performAttack()
