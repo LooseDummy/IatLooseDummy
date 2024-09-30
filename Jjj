@@ -1,0 +1,116 @@
+damage = 3.2
+user = "onlykrd3"
+local NPC = workspace:WaitForChild(user)
+function getClosestPlayer()
+    local closest_player, closest_distance = nil, 8
+    for i, player in pairs(workspace:GetChildren()) do
+        if player:FindFirstChild("Torso") and player ~= NPC then
+            local distance = (NPC.Torso.Position - player.Torso.Position).Magnitude
+            if distance < closest_distance then
+                closest_player = player
+                closest_distance = distance
+            end
+        end
+    end
+    return closest_player
+end
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+local animationId = "rbxassetid://5894120783"
+local animation = Instance.new("Animation")
+animation.AnimationId = animationId
+
+local humanoid = character:FindFirstChildOfClass("Humanoid")
+local animator = humanoid:FindFirstChildOfClass("Animator")
+
+if not animator then
+    animator = Instance.new("Animator", humanoid)
+end
+
+function playAttackAnimation()
+    local animationTrack = animator:LoadAnimation(animation)
+    animationTrack:Play()
+function stopAttackAnimation()
+    animationTrack:Stop()
+end
+end
+local args = {
+    [1] = false,
+    [2] = BrickColor.new(327),
+    [3] = 2,
+    [4] = Enum.Material.Neon
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Effects"):WaitForChild("BarragePunchEffect"):FireServer(unpack(args))
+function performAttack()
+local args = {
+    [1] = true,
+    [2] = BrickColor.new(327),
+    [3] = 3,
+    [4] = Enum.Material.Neon
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Effects"):WaitForChild("BarragePunchEffect"):FireServer(unpack(args))
+a=0
+while a<50 do
+damage = 9.75
+time = 0.25
+target = getClosestPlayer()
+if target~=nil then
+x = target.Torso.CFrame.Position.X
+y = target.Torso.CFrame.Position.Y
+z = target.Torso.CFrame.Position.Z
+end
+if target==nil then
+time = 0
+damage = 0
+x = math.huge
+y = math.huge
+z = math.huge
+target = workspace:WaitForChild(user)
+end
+local args = {
+    [1] = target.Humanoid,
+    [2] = damage,
+    [3] = CFrame.new(x+math.random(-2.0,2.0), y+math.random(-3.0,3.0), z+math.random(-2.0,2.0)),
+    [4] = Vector3.new(0, 1, 0),
+    [5] = time,
+    [6] = BrickColor.new(327),
+    [7] = 1.2,
+    [8] = "rbxassetid://4796047093",
+    [9] = 2
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Attacks"):WaitForChild("DamageBlade"):FireServer(unpack(args))
+local args = {
+    [1] = CFrame.new(x+math.random(-3.0,3.0), y+math.random(-3.0,3.0), z+math.random(-3.0,3.0)),
+    [2] = 5,
+    [3] = BrickColor.new(26),
+    [4] = Enum.Material.ForceField
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Effects"):WaitForChild("GrowingSphere"):FireServer(unpack(args))
+local args = {
+    [1] = CFrame.new(x+math.random(-3.0,3.0), y+math.random(-3.0,3.0), z+math.random(-3.0,3.0)),
+    [2] = 6,
+    [3] = BrickColor.new(327),
+    [4] = Enum.Material.ForceField
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Effects"):WaitForChild("GrowingSphere"):FireServer(unpack(args))
+a+=1
+wait(0.01)
+end
+end
+playAttackAnimation()  
+performAttack()
+stopAttackAnimation()
+local args = {
+    [1] = false,
+    [2] = BrickColor.new(1001),
+    [3] = 2,
+    [4] = Enum.Material.Neon
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Effects"):WaitForChild("BarragePunchEffect"):FireServer(unpack(args))
