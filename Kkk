@@ -1,0 +1,94 @@
+user = "onlykrd3"
+local NPC = workspace:WaitForChild(user)
+function getClosestPlayer()
+    local closest_player, closest_distance = nil, 6
+    for i, player in pairs(workspace:GetChildren()) do
+        if player:FindFirstChild("Torso") and player ~= NPC then
+            local distance = (NPC:WaitForChild("Right Arm").Position - player.Torso.Position).Magnitude
+            if distance < closest_distance then
+                closest_player = player
+                closest_distance = distance
+            end
+        end
+    end
+    return closest_player
+end
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+local animationId = "rbxassetid://6042982572"
+local animationId2 = "rbxassetid://6457830735"
+local animation = Instance.new("Animation")
+local animation2 = Instance.new("Animation")
+animation.AnimationId = animationId
+animation2.AnimationId = animationId2
+
+local humanoid = character:FindFirstChildOfClass("Humanoid")
+local animator = humanoid:FindFirstChildOfClass("Animator")
+
+if not animator then
+    animator = Instance.new("Animator", humanoid)
+end
+function performAttack()
+target = getClosestPlayer()
+pos = target.Torso.Position
+local args = {
+    [1] = target
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("SpecialMoves"):WaitForChild("BlockBreak"):FireServer(unpack(args))
+local args = {
+    [1] = target.Humanoid,
+    [2] = 65,
+    [3] = CFrame.new(pos),
+    [4] = Vector3.new(0, 25, 0),
+    [5] = 0.5,
+    [6] = BrickColor.new(104),
+    [7] = 0.4,
+    [8] = "rbxassetid://6945262654",
+    [9] = 5
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Attacks"):WaitForChild("DamageBlade"):FireServer(unpack(args))
+local args = {
+    [1] = CFrame.new(pos),
+    [2] = 30,
+    [3] = BrickColor.new(26),
+    [4] = Enum.Material.Neon
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Effects"):WaitForChild("GrowingSphere"):FireServer(unpack(args))
+local args = {
+    [1] = CFrame.new(pos),
+    [2] = 30.5,
+    [3] = BrickColor.new(1020),
+    [4] = Enum.Material.ForceField
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Effects"):WaitForChild("GrowingSphere"):FireServer(unpack(args))
+
+end
+function playAttackAnimation()
+    local animationTrack = animator:LoadAnimation(animation)
+    animationTrack:Play()
+function stopAttackAnimation()
+    animationTrack:Stop()
+function playAttackAnimation2()
+    local animationTrack2 = animator:LoadAnimation(animation2)
+    animationTrack2:Play()
+function stopAttackAnimation2()
+    animationTrack2:Stop()
+end
+end
+end
+end
+wait(0.5)
+playAttackAnimation()
+workspace:WaitForChild(user).Humanoid.WalkSpeed = 30
+wait(1.5)
+stopAttackAnimation()
+playAttackAnimation2()
+workspace:WaitForChild(user).Humanoid.WalkSpeed = 16
+wait(0.5)
+performAttack()
+game:GetService("ReplicatedStorage"):WaitForChild("Effects"):WaitForChild("StrongPunchEffect"):FireServer()
